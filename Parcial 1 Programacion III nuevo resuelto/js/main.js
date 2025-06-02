@@ -149,6 +149,7 @@ function mostrarProductos(array) {
 
 //BARRA BUSQUEDA
 function buscarProductos() {
+  // filtra los productos mientras escribo
   let barraBusqueda = document.querySelector(".barra-busqueda");
   barraBusqueda.addEventListener("keyup", () => {
     let valorInput = barraBusqueda.value.toLowerCase().trim();
@@ -164,10 +165,12 @@ function buscarProductos() {
 //////funciones validadoras////////
 //////validar id producto
 function validarId(id) {
+  // devuelve true o false si el id existe
   return productos.some((e) => e.id === id); // devuelve true o false
 }
 ////// validar id en el carrito: para ver si ya esta agregado
 function validarProductoEnElCarrito(id) {
+  // revisa si el producto ya está en el carrito
   return carrito.find((p) => p.id === id);
 }
 // /// FUNCIONES CONTADOR CARRITO
@@ -176,12 +179,14 @@ function validarProductoEnElCarrito(id) {
 // • Actualiza la cantidad de productos en el header en la parte de Carrito: 0 productos
 // • Actualiza el precio del valor total del carrito abajo de todo a la derecha (cuando haya productos en el carrito)
 function contadorCarrito() {
+  // cuenta cuántos productos hay en el carrito
   let carritoContador = document.querySelector("#contador-carrito");
   let contador = carrito.reduce((sum, item) => sum + item.cantidad, 0);
   carritoContador.textContent = contador;
 }
 /// disminuir cantidad
 function disminuirCantidad(id) {
+  // baja la cantidad del producto o lo saca si queda en 0
   let item = carrito.find((c) => c.id === id);
   if (!item) return;
   item.cantidad--;
@@ -194,6 +199,7 @@ function disminuirCantidad(id) {
 }
 //aumentar cantidad
 function incrementarCantidad(id) {
+  // suma uno al producto del carrito
   let item = carrito.find((p) => p.id === id);
   if (!item) return;
   item.cantidad++;
@@ -203,6 +209,7 @@ function incrementarCantidad(id) {
 
 // calcular total carrito
 function calcularTotalCarrito() {
+  // suma el total del carrito
   let carritoTotal = carrito.reduce(
     (acc, item) => acc + item.cantidad * item.precio,
     0
@@ -211,6 +218,7 @@ function calcularTotalCarrito() {
   return carritoTotal;
 }
 function mostrarTotalCarrito() {
+  // muestra el total abajo a la derecha
   let totalContenedor = document.querySelector(".total-carrito");
   let valorTotal = calcularTotalCarrito();
   let totalCarrito = `
@@ -228,13 +236,18 @@ function mostrarTotalCarrito() {
 
 ///MANEJO DE LOCAL STORAGE
 function cargarCarritoLS(nombreArr, array) {
+  // guarda el carrito en localStorage
   localStorage.setItem(nombreArr, JSON.stringify(array));
 }
+
 function traerCarritoLS(nombreArrLocal) {
+  // trae el carrito del localStorage
   let items = localStorage.getItem(nombreArrLocal);
   return items ? JSON.parse(items) : [];
 }
+
 function actualizarCarrito() {
+  // actualiza el localStorage y muestra todo
   cargarCarritoLS("carrito", carrito);
   mostrarCarrito();
   contadorCarrito();
@@ -255,6 +268,7 @@ function actualizarCarrito() {
 //////CRUD CARRITO
 ///abrimos el carrito desde el boton
 function abrirCarrito() {
+  // abre o cierra el carrito
   let carritoVista = document.querySelector(".seccion-carrito");
   if (carritoVista.style.display === "flex") {
     carritoVista.style.display = "none";
@@ -265,6 +279,7 @@ function abrirCarrito() {
 }
 
 function mostrarCarrito() {
+  // muestra el carrito en el HTML
   let productosLS = traerCarritoLS("carrito");
   const itemsCarrito = document.querySelector("#items-carrito");
   let listadoCarrito = "";
@@ -295,6 +310,7 @@ function mostrarCarrito() {
   itemsCarrito.innerHTML = listadoCarrito;
 }
 function agregarProducto(id) {
+  // agrega un producto al carrito
   if (!id) {
     throw new Error("Error. El producto con ese id no existe.");
   }
@@ -317,6 +333,7 @@ function agregarProducto(id) {
 }
 // ELIMINAR ITEM
 function eliminarProducto(id) {
+  // saca un producto del carrito
   carrito = carrito.filter((c) => c.id !== id);
   actualizarCarrito();
 }
@@ -325,6 +342,7 @@ function eliminarProducto(id) {
 // • Implementa la funcionalidad para ordenar los productos en estos dos botones. Un boton debe ordenar por nombre los
 // productos y el otro por precio de menor a mayor
 function ordenarNombre() {
+  // ordena los productos por nombre
   frutas.sort((a, b) => a.nombre.localeCompare(b.nombre));
   mostrarProductos(frutas);
 }
@@ -332,6 +350,7 @@ function ordenarNombre() {
 ///////////////////////////////
 // ordena la lista de productos de menor a mayor precio
 function ordenarPrecio() {
+  // ordena los productos por precio (menor a mayor)
   frutas.sort((a, b) => a.precio - b.precio);
   mostrarProductos(frutas);
 }
@@ -341,10 +360,12 @@ function ordenarPrecio() {
 //ELIMINAR CARRITO COMPLETO
 
 function eliminarCarrito() {
+  // vacía todo el carrito
   carrito = [];
   actualizarCarrito();
 }
 function init() {
+  // función principal que se ejecuta al cargar
   carrito = traerCarritoLS("carrito");
   imprimirDatosAlumno(alumno);
   mostrarProductos(frutas);
