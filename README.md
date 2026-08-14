@@ -39,4 +39,4 @@ Al ser un proyecto frontend puro, no requiere instalación de dependencias ni se
 
 1. **Clonar el repositorio:**
    ```bash
-   git clone [https://github.com/TuUsuario/TU-NUEVO-NOMBRE.git](https://github.com/TuUsuario/TU-NUEVO-NOMBRE.git)
+   git clone https://github.com/MoSiciliano/ecommerce-mercado-natural.git
